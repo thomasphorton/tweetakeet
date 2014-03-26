@@ -1,0 +1,32 @@
+{
+  "name": "Breaking Markov",
+  "version": "0.0.0",
+  "homepage": "https://github.com/thomasphorton/breaking-markov",
+  "authors": [
+    "Tom Horton <thomasphorton@gmail.com>"
+  ],
+  "description": "y",
+  "main": "y",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "markov",
+    "chain"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "jquery": "~2.1.0",
+    "lodash": "~2.4.1"
+  }
+}
