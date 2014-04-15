@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-
+require('newrelic');
 var express = require('express');
 var routes = require('./routes');
 var markov = require('./routes/markov');
