@@ -11,9 +11,14 @@ var path = require('path');
 
 var Bot = require("./bot");
 
-var bot_config = require('./.twitconfig');
+console.log();
 
-var bot = new Bot(bot_config);
+var bot = new Bot({
+  consumer_key:         process.env.TWITTER_consumer_key,
+  consumer_secret:      process.env.TWITTER_consumer_secret,
+  access_token:         process.env.TWITTER_access_token,
+  access_token_secret:  process.env.TWITTER_access_token_secret
+});
 
 bot.watch_mention(function(tweet) {
 
@@ -21,7 +26,7 @@ bot.watch_mention(function(tweet) {
 
   console.log(tweet_text);
 
-  markov.add_tweet(tweet_text, function() { 
+  markov.add_tweet(tweet_text, function() {
 
     markov.generate("I", function(chain) {
 
