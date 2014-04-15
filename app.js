@@ -1,7 +1,3 @@
-
-/**
- * Module dependencies.
- */
 require('newrelic');
 var express = require('express');
 var routes = require('./routes');
@@ -11,8 +7,6 @@ var path = require('path');
 
 var Bot = require("./bot");
 
-console.log();
-
 var bot = new Bot({
   consumer_key:         process.env.TWITTER_consumer_key,
   consumer_secret:      process.env.TWITTER_consumer_secret,
@@ -21,23 +15,18 @@ var bot = new Bot({
 });
 
 bot.watch_mention(function(tweet) {
-
-  var tweet_text = tweet.text;
-
-  console.log(tweet_text);
-
-  markov.add_tweet(tweet_text, function() {
-
-    markov.generate("I", function(chain) {
-
-      var status = "@" + tweet.user.screen_name + " " + chain;
-      bot.reply(status, tweet, function() {
-        console.log(status);
-      });
+  if (tweet.user.screen_name === 'tweetakeet') {
+    return false;
+  } else {
+    markov.add(tweet.text, function() {
+      if (tweet.text.indexOf('@tweetakeet') > -1) {
+        markov.generate("{{BEG}}", function(chain) {
+          var response = "@" + tweet.user.screen_name + " " + chain;
+          bot.reply(response, tweet, function() {});
+        });
+      }
     });
-
-  });
-
+  }
 });
 
 var app = express();
@@ -59,8 +48,6 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/add', markov.add);
-app.get('/addtweet', markov.add_tweet);
 app.get('/clear', markov.clear);
 app.get('/node/:query', markov.node);
 app.get('/generate/:query', markov.generate_page);

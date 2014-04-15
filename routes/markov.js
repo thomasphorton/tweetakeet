@@ -11,10 +11,11 @@ var _ = require('lodash')
 
 var chain = [];
 
-exports.add_tweet = function(tweet_text, cb) {
+exports.add = function(input, cb) {
 
-  var input = tweet_text
-    , input_array = input.split(/\s+/);
+  var input_array = input.split(/\s+/);
+
+  input_array.unshift("{{BEG}}");
 
   _.each(input_array, function(node, i) {
 
@@ -53,49 +54,6 @@ exports.add_tweet = function(tweet_text, cb) {
   if (typeof(cb) === "function") {
       cb();
   }
-
-};
-
-exports.add = function(req, res) {
-
-  var input = require('../input').jesse()
-    , input_array = input.split(/\s+/);
-
-  _.each(input_array, function(node, i) {
-
-    var next_node = input_array[i + 1];
-
-    if (!next_node) {
-      next_node = "{{END}}"
-    }
-
-    dictionary.findOne({ _id: node}, function(e, result) {
-
-      if (result) {
-
-        dictionary.update(
-          { _id: node },
-          { $push: { "next": next_node }}
-        );
-
-      } else {
-
-        dictionary.insert({ _id: node, next: []}, function() {
-
-          dictionary.update(
-            { _id: node },
-            { $push: { "next": next_node }}
-          );
-
-        });
-
-      }
-
-    });
-
-  });
-
-  res.render('index', { title: 'Data Added', content: "Data Added" });
 
 };
 
@@ -138,9 +96,12 @@ exports.generate = function(seed, cb) {
 
       generate_chain( function(node) {
 
+        node = _.reject(node, function(elem) {
+          return (elem["_id"] === "{{BEG}}");
+        });
+
         var new_sentence_array = _.pluck(node, "_id")
           , content = (new_sentence_array.join(" "));
-
 
         if (typeof(cb) === "function") {
           cb(content);

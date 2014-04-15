@@ -1,22 +1,10 @@
-//
-//  Bot
-//  class for performing various twitter actions
-//
-var Twit = require('twit');
-
-var markov = require('./routes/markov');
+var Twit = require('twit'),
+    markov = require('./routes/markov');
 
 var Bot = module.exports = function(config) {
   this.twit = new Twit(config);
 };
 
-markov.generate("You", function(tweet) {
-  console.log(tweet);
-});
-
-//
-//  post a tweet
-//
 Bot.prototype.tweet = function (status, callback) {
   if(typeof status !== 'string') {
     return callback(new Error('tweet must be of type String'));
@@ -40,24 +28,15 @@ Bot.prototype.reply = function (status, old_tweet, callback) {
 };
 
 Bot.prototype.watch_mention = function (callback) {
-  var stream = this.twit.stream('user', { track: '@tweetakeet', language: 'en' });
+  var stream = this.twit.stream('user');
 
   stream.on('tweet', function(tweet) {
 
-    if (tweet.user.screen_name === 'tweetakeet') {
-      console.log('self tweet');
-      return false;
-    } else {
-      console.log(tweet);
-      callback(tweet);
-    }
+    callback(tweet);
 
   });
 }
 
-//
-//  choose a random friend of one of your followers, and follow that user
-//
 Bot.prototype.mingle = function (callback) {
   var self = this;
 
@@ -78,9 +57,6 @@ Bot.prototype.mingle = function (callback) {
     })
 };
 
-//
-//  prune your followers list; unfollow a friend that hasn't followed you back
-//
 Bot.prototype.prune = function (callback) {
   var self = this;
 
