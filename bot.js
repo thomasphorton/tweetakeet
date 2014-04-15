@@ -4,9 +4,15 @@
 //
 var Twit = require('twit');
 
+var markov = require('./routes/markov');
+
 var Bot = module.exports = function(config) {
   this.twit = new Twit(config);
 };
+
+markov.generate("You", function(tweet) {
+  console.log(tweet);
+});
 
 //
 //  post a tweet
@@ -19,6 +25,35 @@ Bot.prototype.tweet = function (status, callback) {
   }
   this.twit.post('statuses/update', { status: status }, callback);
 };
+
+Bot.prototype.reply = function (status, old_tweet, callback) {
+  if(typeof status !== 'string') {
+    return callback(new Error('tweet must be of type String'));
+  } else if(status.length > 140) {
+    return callback(new Error('tweet is too long: ' + status.length));
+  }
+
+  this.twit.post('statuses/update', {
+    status: status,
+    in_reply_to_status_id: old_tweet.id_str
+  }, callback);
+};
+
+Bot.prototype.watch_mention = function (callback) {
+  var stream = this.twit.stream('user', { track: '@tweetakeet', language: 'en' });
+
+  stream.on('tweet', function(tweet) {
+
+    if (tweet.user.screen_name === 'tweetakeet') {
+      console.log('self tweet');
+      return false;
+    } else {
+      console.log(tweet);
+      callback(tweet);
+    }
+
+  });
+}
 
 //
 //  choose a random friend of one of your followers, and follow that user

@@ -11,6 +11,51 @@ var _ = require('lodash')
 
 var chain = [];
 
+exports.add_tweet = function(tweet_text, cb) {
+
+  var input = tweet_text
+    , input_array = input.split(/\s+/);
+
+  _.each(input_array, function(node, i) {
+
+    var next_node = input_array[i + 1];
+
+    if (!next_node) {
+      next_node = "{{END}}"
+    }
+
+    dictionary.findOne({ _id: node}, function(e, result) {
+
+      if (result) {
+
+        dictionary.update(
+          { _id: node },
+          { $push: { "next": next_node }}
+        );
+
+      } else {
+
+        dictionary.insert({ _id: node, next: []}, function() {
+
+          dictionary.update(
+            { _id: node },
+            { $push: { "next": next_node }}
+          );
+
+        });
+
+      }
+
+    });
+
+  });
+
+  if (typeof(cb) === "function") {
+      cb();
+  }
+
+};
+
 exports.add = function(req, res) {
 
   var input = require('../input').jesse()
@@ -80,14 +125,13 @@ exports.node = function(req, res) {
 
 };
 
-exports.generate = function(req, res) {
-
-  var seed = req.params.query;
+exports.generate = function(seed, cb) {
 
   dictionary.findOne({ _id: seed}, function(e, node) {
 
     if (!node) {
-      res.render('index', { title: seed + " not found", content: "Sorry about that."});
+      console.error('Node not found, exiting.');
+      return false;
     } else {
 
       chain.push(node);
@@ -97,9 +141,10 @@ exports.generate = function(req, res) {
         var new_sentence_array = _.pluck(node, "_id")
           , content = (new_sentence_array.join(" "));
 
-        // res.send(content);
 
-        res.render('index', { title: seed, content: content });
+        if (typeof(cb) === "function") {
+          cb(content);
+        }
 
         chain = [];
 
@@ -109,35 +154,53 @@ exports.generate = function(req, res) {
 
   });
 
+}
+
+exports.generate_page = function(req, res) {
+
+  var seed = req.params.query;
+
+  exports.generate(seed, function(chain) {
+    res.render('index', { title: seed, content: chain });
+  });
+
 };
 
 function get_next_node(node, cb) {
 
   var next_node = node.next[Math.floor(Math.random() * node.next.length)];
 
-  dictionary.findOne({ _id: next_node}, function(e, new_node) {
-
-    chain.push(new_node);
-
+  if (next_node === "{{END}}") {
+    chain.push('.');
     if (typeof(cb) === 'function') {
-      cb(new_node);
+      cb({_id: "."});
     }
+  } else {
 
-  });
+    dictionary.findOne({ _id: next_node}, function(e, new_node) {
+
+      chain.push(new_node);
+      if (typeof(cb) === 'function') {
+        cb(new_node);
+      }
+
+    });
+
+  }
 
 }
 
-function generate_chain(cb){
+function generate_chain(cb) {
 
     get_next_node(chain[chain.length-1], function(result) {
 
-      if (!result._id.match(/[\.!]$/) && result._id) {
+      if (result !== null && !result._id.match(/[\.!]$/)) {
 
         generate_chain(cb);
 
       } else {
 
-        if(typeof(cb) === 'function') {
+        if (typeof(cb) === 'function') {
           cb(chain);
         }
 
@@ -146,5 +209,3 @@ function generate_chain(cb){
     });
 
 }
-
-// function generate_chain(seed_record, cb){

@@ -15,7 +15,25 @@ var bot_config = require('./.twitconfig');
 
 var bot = new Bot(bot_config);
 
-bot.tweet("foobar", function() {});
+bot.watch_mention(function(tweet) {
+
+  var tweet_text = tweet.text;
+
+  console.log(tweet_text);
+
+  markov.add_tweet(tweet_text, function() { 
+
+    markov.generate("I", function(chain) {
+
+      var status = "@" + tweet.user.screen_name + " " + chain;
+      bot.reply(status, tweet, function() {
+        console.log(status);
+      });
+    });
+
+  });
+
+});
 
 var app = express();
 
@@ -37,9 +55,10 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/add', markov.add);
+app.get('/addtweet', markov.add_tweet);
 app.get('/clear', markov.clear);
 app.get('/node/:query', markov.node);
-app.get('/generate/:query', markov.generate);
+app.get('/generate/:query', markov.generate_page);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
