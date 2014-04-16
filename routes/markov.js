@@ -160,7 +160,7 @@ function generate_chain(cb) {
 
     get_next_node(chain[chain.length-1], function(result) {
 
-      if (result !== null && !result._id.match(/[\.!]$/)) {
+      if (result !== null && !result._id !== "{{end}}") {
 
         generate_chain(cb);
 
