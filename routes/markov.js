@@ -89,6 +89,8 @@ exports.node = function(req, res) {
 
 exports.generate = function(seed, cb) {
 
+  seed = seed.toLowerCase();
+
   dictionary.findOne({ _id: seed}, function(e, node) {
 
     if (!node) {
