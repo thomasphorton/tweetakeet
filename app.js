@@ -59,7 +59,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', pages.index);
-app.get('/clear', markov.clear);
+// app.get('/clear', markov.clear);
 app.get('/dictionary', pages.dictionary);
 app.get('/dictionary/:query', markov.dictionary);
 app.get('/generate', pages.generate);
