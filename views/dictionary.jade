@@ -9,8 +9,8 @@ block content
 
   div.row
     table
-      each item in dictionary
+      each item in dictionary.entries
         tr
           td
             a(href='/dictionary/' + item.id)= item.id
-          td= '(' + item.count + ')'
+          td= item.probability + '%'
