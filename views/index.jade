@@ -1,12 +1,11 @@
 extends layout
 
 block content
-  div.row
-    h1= title
+  div.container
+    div.row
+      h1= title
 
-  div.row
-    p #{content}
+    div.row
+      p #{content}
 
-  div.row
-    input.markov-input
-    button.markov-button Begin Chain
+      a.twitter-timeline(href="https://twitter.com/tweetakeet" data-widget-id="456520956387684352") Tweets by @tweetakeet

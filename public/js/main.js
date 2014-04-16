@@ -1,8 +1,10 @@
 $(function() {
 
-  $('.markov-button').click(function() {
+  $('.markov-generate-form').submit(function(e) {
 
-    var query = $('.markov-input').val();
+    e.preventDefault();
+
+    var query = $('.markov-generate-input').val();
 
     if (query !== '') {
 

@@ -179,7 +179,7 @@ exports.generate_page = function(req, res) {
   var seed = req.params.query;
 
   exports.generate(seed, function(chain) {
-    res.render('index', { title: seed, content: chain });
+    res.render('generate', { title: seed, content: chain });
   });
 
 };

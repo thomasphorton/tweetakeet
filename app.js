@@ -1,11 +1,11 @@
 require('newrelic');
-var express = require('express');
-var routes = require('./routes');
-var markov = require('./routes/markov');
-var http = require('http');
-var path = require('path');
 
-var Bot = require("./bot");
+var express = require('express'),
+    routes = require('./routes'),
+    markov = require('./routes/markov'),
+    http = require('http'),
+    path = require('path'),
+    Bot = require("./bot");
 
 var bot = new Bot({
   consumer_key:         process.env.TWITTER_consumer_key,
@@ -48,7 +48,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/clear', markov.clear);
+//app.get('/clear', markov.clear);
 app.get('/dictionary/:query', markov.dictionary);
 app.get('/generate/:query', markov.generate_page);
 
