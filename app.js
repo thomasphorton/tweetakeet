@@ -1,7 +1,7 @@
 require('newrelic');
 
 var express = require('express'),
-    routes = require('./routes'),
+    pages = require('./routes/pages'),
     markov = require('./routes/markov'),
     http = require('http'),
     path = require('path'),
@@ -47,11 +47,13 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+app.get('/', pages.index);
 //app.get('/clear', markov.clear);
+app.get('/dictionary', pages.dictionary);
 app.get('/dictionary/:query', markov.dictionary);
+app.get('/generate', pages.generate);
 app.get('/generate/:query', markov.generate_page);
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });

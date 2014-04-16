@@ -5,10 +5,21 @@ html
     link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.css')
     link(rel='stylesheet', href='/css/style.css')
     script(src='/bower_components/jquery/dist/jquery.min.js')
+    script(src='/bower_components/bootstrap/dist/js/bootstrap.min.js')
     script(src='/js/main.js')
 
   body
     header.navbar.navbar-static-top
       div.navbar-header
+        button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-collapse")
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
         a.navbar-brand(href="/") Home
+      nav.collapse.navbar-collapse
+        ul.nav.navbar-nav
+          li
+            a(href="/generate") Generate
+          li
+            a(href="/dictionary") Dictionary
     block content

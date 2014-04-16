@@ -88,7 +88,7 @@ exports.dictionary = function(req, res) {
 
     if (!node) {
 
-      res.render('dictionary', {
+      res.render('dictionary_entry', {
         title: '"' + seed + '" not found',
         content: "Sorry about that.",
         dictionary: { entries: [], count: 0, unique: 0 }
@@ -116,7 +116,7 @@ exports.dictionary = function(req, res) {
           });
         }).value();
 
-      res.render('dictionary', {
+      res.render('dictionary_entry', {
         title: node._id,
         content: 'Possible words that follow "' + seed + '"',
         dictionary: {
@@ -154,8 +154,8 @@ exports.generate = function(seed, cb) {
           , content = (new_sentence_array.join(" "));
 
         if (content.length > 130) {
-          console.log('restarting');
-          generate(seed, cb);
+          // Try and keep tweets under 140 char (remember we're adding @mentions)
+          exports.generate(seed, cb);
         } else {
 
           if (typeof(cb) === "function") {
@@ -179,7 +179,10 @@ exports.generate_page = function(req, res) {
   var seed = req.params.query;
 
   exports.generate(seed, function(chain) {
-    res.render('generate', { title: seed, content: chain });
+    res.render('generate', {
+      title: 'Chain beginning with "' + seed + '"',
+      content: chain
+    });
   });
 
 };

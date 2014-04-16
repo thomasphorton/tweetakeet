@@ -3,19 +3,12 @@ extends layout
 block content
   div.container
     div.row
-      h1= title
+      h1 #{title}
 
     div.row
       p #{content}
 
-    div.row
-      table.table
-        thead
-          tr
-            th= "Word"
-            th= "Probability"
-        each item in dictionary.entries
-          tr
-            td
-              a(href='/dictionary/' + item.id)= item.id
-            td= item.probability + '%'
+      form.markov-form.form-inline(data-type="dictionary")
+        div.form-group
+          input.markov-input.form-control
+          button.btn.btn-default Look Up Word

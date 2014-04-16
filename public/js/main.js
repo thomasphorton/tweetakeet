@@ -1,21 +1,17 @@
 $(function() {
 
-  $('.markov-generate-form').submit(function(e) {
-
+  $('.markov-form').submit(function(e) {
     e.preventDefault();
 
-    var query = $('.markov-generate-input').val();
+    var $this = $(this),
+        type = $this.data('type'),
+        query = $this.find('.markov-input').val();
 
     if (query !== '') {
-
-      window.location = '/generate/' + query;
-
+      window.location = '/' + type + '/' + query;
     } else {
-
       console.log('invalid query');
-
     }
-
   });
 
 });
