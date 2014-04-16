@@ -13,17 +13,21 @@ var chain = [];
 
 exports.add = function(input, cb) {
 
+  input = input.toLowerCase();
+
   var input_array = input.split(/\s+/);
 
-  input_array.unshift("{{BEG}}");
+  input_array.unshift("{{beg}}");
 
   _.each(input_array, function(node, i) {
 
     var next_node = input_array[i + 1];
 
     if (!next_node) {
-      next_node = "{{END}}"
+      next_node = "{{end}}"
     }
+
+    node = node.toLowerCase();
 
     dictionary.findOne({ _id: node}, function(e, result) {
 
@@ -97,7 +101,7 @@ exports.generate = function(seed, cb) {
       generate_chain( function(node) {
 
         node = _.reject(node, function(elem) {
-          return (elem["_id"] === "{{BEG}}");
+          return (elem["_id"] === "{{beg}}");
         });
 
         var new_sentence_array = _.pluck(node, "_id")
@@ -131,10 +135,9 @@ function get_next_node(node, cb) {
 
   var next_node = node.next[Math.floor(Math.random() * node.next.length)];
 
-  if (next_node === "{{END}}") {
-    chain.push('.');
+  if (next_node === "{{end}}") {
     if (typeof(cb) === 'function') {
-      cb({_id: "."});
+      cb();
     }
   } else {
 

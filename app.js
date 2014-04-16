@@ -20,8 +20,8 @@ bot.watch_mention(function(tweet) {
   } else {
     markov.add(tweet.text, function() {
       if (tweet.text.indexOf('@tweetakeet') > -1) {
-        markov.generate("{{BEG}}", function(chain) {
-          var response = "@" + tweet.user.screen_name + " " + chain;
+        markov.generate("{{beg}}", function(chain) {
+          var response = "@" + tweet.user.screen_name.toLowerCase() + " " + chain;
           bot.reply(response, tweet, function() {});
         });
       }
