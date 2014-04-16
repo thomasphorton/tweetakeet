@@ -96,14 +96,22 @@ exports.dictionary = function(req, res) {
 
     } else {
 
-      var dictionary = node.next.sort();
-
-      dictionary = _.reject(dictionary, function(elem) {
-        if (elem === "{{end}}") {
-          return true;
-        }
-        return false;
-      });
+      var dictionary = _.chain(node.next.sort())
+        .reject(function(elem) {
+          if (elem === "{{end}}") {
+            return true;
+          }
+          return false;
+        })
+        .groupBy(function(elem) {
+          return elem;
+        })
+        .map(function(elem) {
+          return ({
+            id: elem[0],
+            count: elem.length
+          });
+        }).value();
 
       res.render('dictionary', {
         title: node._id,

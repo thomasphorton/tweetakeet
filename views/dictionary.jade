@@ -12,4 +12,5 @@ block content
       each item in dictionary
         tr
           td
-            a(href='/dictionary/' + item)= item
+            a(href='/dictionary/' + item.id)= item.id
+          td= '(' + item.count + ')'
