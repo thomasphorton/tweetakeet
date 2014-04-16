@@ -49,7 +49,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/clear', markov.clear);
-app.get('/node/:query', markov.node);
+app.get('/dictionary/:query', markov.dictionary);
 app.get('/generate/:query', markov.generate_page);
 
 http.createServer(app).listen(app.get('port'), function(){

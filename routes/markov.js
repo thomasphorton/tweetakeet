@@ -80,17 +80,25 @@ exports.clear = function(req, res) {
 
 };
 
-exports.node = function(req, res) {
+exports.dictionary = function(req, res) {
 
   var seed = req.params.query;
 
   dictionary.findOne({ _id: seed}, function(e, node) {
 
     if (!node) {
-      res.render('index', { title: seed + " not found", content: "Sorry about that."});
+      res.render('dictionary', { title: seed + " not found", content: "Sorry about that."});
     } else {
 
-      res.send(node);
+      var dictionary = _.sortBy(node.next, function(item) {
+        return item._id;
+      });
+
+      res.render('dictionary', {
+        title: node._id,
+        content: "Possible words that follow " + seed,
+        dictionary: dictionary
+      });
 
     }
 

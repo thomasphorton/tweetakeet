@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  div.row
+    h1= title
+
+  div.row
+    p #{content}
+
+  div.row
+    table
+      each item in dictionary
+        tr
+          td
+            a(href='/dictionary/' + item)= item
