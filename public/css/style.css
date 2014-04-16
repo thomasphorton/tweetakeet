@@ -5,3 +5,14 @@ body {
 a {
   color: #00B7FF;
 }
+
+.icon-bar {
+  background-color: #00B7FF;
+}
+
+footer {
+  margin-top: 3em;
+  border-top: 1px solid #EEE;
+  padding: 1em 0;
+  text-align: center;
+}

@@ -172,11 +172,21 @@ exports.generate_page = function(req, res) {
 
   var seed = req.params.query;
 
-  exports.generate(seed, function(chain) {
-    res.render('generate', {
-      title: 'Chain beginning with "' + seed + '"',
-      content: chain
-    });
+  dictionary.findOne({ _id: seed}, function(e, node) {
+
+    if (!node) {
+      res.render('generate', {
+        title: 'Seed Not Found',
+        content: '"' + seed + '" not found. Unable to generate a chain.'
+      });
+    } else {
+      exports.generate(seed, function(chain) {
+        res.render('generate', {
+          title: 'Chain beginning with "' + seed + '"',
+          content: chain
+        });
+      });
+    }
   });
 
 };

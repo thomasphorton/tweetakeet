@@ -1,11 +1,13 @@
 extends layout
 
 block content
-  div.container
-    div.row
-      h1= title
 
-    div.row
+  div.jumbotron
+    div.container
+      h1 #{title}
       p #{content}
 
-      a.twitter-timeline(href="https://twitter.com/tweetakeet" data-widget-id="456520956387684352") Tweets by @tweetakeet
+  div.container
+    div.row
+      div.col-md-12
+        a.twitter-timeline(href="https://twitter.com/tweetakeet" data-widget-id="456520956387684352") Tweets by @tweetakeet

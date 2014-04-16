@@ -3,12 +3,13 @@ extends layout
 block content
   div.container
     div.row
-      h1 #{title}
+      div.col-md-12
+        h1 #{title}
 
-    div.row
-      p #{content}
+        p #{content}
 
-      form.markov-form.form-inline(data-type="generate")
-        div.form-group
-          input.markov-input.form-control
-          button.btn.btn-default Begin Chain
+        form.markov-form.form-inline(data-type="generate")
+          div.input-group
+            input.markov-input.form-control(placeholder="First Word of Chain")
+            span.input-group-btn
+              button.btn.btn-default Begin Chain
