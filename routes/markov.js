@@ -18,7 +18,14 @@ exports.add = function(input, cb) {
   var input_array = input.split(/\s+/);
 
   input_array = _.reject(input_array, function(elem) {
-    return (elem.indexOf('@') > -1);
+    if (
+      elem.indexOf('@') > -1 ||
+      elem.indexOf('http') > -1 ||
+      elem === "rt"
+    ) {
+      return false;
+    }
+    return true;
   });
 
   input_array.unshift("{{beg}}");
