@@ -8,15 +8,10 @@ var express = require('express'),
     Bot = require("./bot");
 
 var bot = new Bot({
-  // consumer_key:         process.env.TWITTER_consumer_key,
-  // consumer_secret:      process.env.TWITTER_consumer_secret,
-  // access_token:         process.env.TWITTER_access_token,
-  // access_token_secret:  process.env.TWITTER_access_token_secret
-
-  consumer_key:'1jQxsWpkZoYYVMuJQXXLCw',
-  consumer_secret:'8INkXTGaPkcp0JzASRxHaMAY1QBCGFMLEvhut3Tng',
-  access_token:'2411690641-cvtxK39b9adeSYABMH682bBwii1cB4GeNCLwi2e',
-  access_token_secret:'iz1jKWhZKLBkfoy1iEbjKCWvK7RtQJxONsCvvoXwqzvPL'
+  consumer_key:         process.env.TWITTER_consumer_key,
+  consumer_secret:      process.env.TWITTER_consumer_secret,
+  access_token:         process.env.TWITTER_access_token,
+  access_token_secret:  process.env.TWITTER_access_token_secret
 });
 
 bot.watch_mention(function(tweet) {

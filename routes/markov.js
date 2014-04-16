@@ -6,7 +6,7 @@
 var _ = require('lodash')
   , mongo = require('mongodb')
   , monk = require('monk')
-  , db = monk('localhost:27017/nodetest1')//process.env.MONGOLAB_URI)
+  , db = monk(process.env.MONGOLAB_URI)
   , dictionary = db.get('dictionary');
 
 var chain = [];
