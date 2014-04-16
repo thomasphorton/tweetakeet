@@ -23,9 +23,9 @@ exports.add = function(input, cb) {
       elem.indexOf('http') > -1 ||
       elem === "rt"
     ) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   });
 
   input_array.unshift("{{beg}}");
