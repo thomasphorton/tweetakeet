@@ -87,16 +87,27 @@ exports.dictionary = function(req, res) {
   dictionary.findOne({ _id: seed}, function(e, node) {
 
     if (!node) {
-      res.render('dictionary', { title: seed + " not found", content: "Sorry about that."});
+
+      res.render('dictionary', {
+        title: '"' + seed + '" not found',
+        content: "Sorry about that.",
+        dictionary: []
+      });
+
     } else {
 
-      var dictionary = _.sortBy(node.next, function(item) {
-        return item._id;
+      var dictionary = node.next.sort();
+
+      dictionary = _.reject(dictionary, function(elem) {
+        if (elem === "{{end}}") {
+          return true;
+        }
+        return false;
       });
 
       res.render('dictionary', {
         title: node._id,
-        content: "Possible words that follow " + seed,
+        content: 'Possible words that follow "' + seed + '"',
         dictionary: dictionary
       });
 
