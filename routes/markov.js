@@ -108,8 +108,15 @@ exports.generate = function(seed, cb) {
         var new_sentence_array = _.pluck(node, "_id")
           , content = (new_sentence_array.join(" "));
 
-        if (typeof(cb) === "function") {
-          cb(content);
+        if (content.length > 130) {
+          console.log('restarting');
+          generate(seed, cb);
+        } else {
+
+          if (typeof(cb) === "function") {
+            cb(content);
+          }
+
         }
 
         chain = [];
