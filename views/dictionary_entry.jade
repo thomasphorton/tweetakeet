@@ -8,13 +8,19 @@ block content
     div.row
       p #{content}
 
-      table.table.table-hover
-        thead
-          tr
-            th= "Word"
-            th= "Probability"
-        each item in dictionary.entries
-          tr
-            td
-              a(href='/dictionary/' + item.id)= item.id
-            td= item.probability + '%'
+      if dictionary.entries.length > 0
+        table.table.table-hover
+          thead
+            tr
+              th= "Word"
+              th= "Probability"
+          each item in dictionary.entries
+            tr
+              td
+                a(href='/dictionary/' + item.id) #{item.id}
+              td #{item.probability}%
+
+      form.markov-form.form-inline(data-type="dictionary")
+        div.form-group
+          input.markov-input.form-control
+          button.btn.btn-default Search Again

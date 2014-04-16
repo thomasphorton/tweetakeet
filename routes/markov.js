@@ -90,31 +90,25 @@ exports.dictionary = function(req, res) {
 
       res.render('dictionary_entry', {
         title: '"' + seed + '" not found',
-        content: "Sorry about that.",
+        content: 'Sorry about that.',
         dictionary: { entries: [], count: 0, unique: 0 }
       });
 
     } else {
 
-      var count = node.next.length;
-
-      var entries = _.chain(node.next.sort())
-        .reject(function(elem) {
-          if (elem === "{{end}}") {
-            return true;
-          }
-          return false;
-        })
-        .groupBy(function(elem) {
-          return elem;
-        })
-        .map(function(elem) {
-          return ({
-            id: elem[0],
-            count: elem.length,
-            probability: (elem.length / count * 100).toFixed(2)
-          });
-        }).value();
+      var count = node.next.length,
+          entries = _.chain(node.next.sort())
+            .groupBy(function(elem) {
+              return elem;
+            })
+            .map(function(elem) {
+              return ({
+                id: elem[0],
+                count: elem.length,
+                probability: (elem.length / count * 100).toFixed(2)
+              });
+            })
+            .value();
 
       res.render('dictionary_entry', {
         title: node._id,

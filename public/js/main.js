@@ -5,7 +5,7 @@ $(function() {
 
     var $this = $(this),
         type = $this.data('type'),
-        query = $this.find('.markov-input').val();
+        query = $this.find('.markov-input').val().toLowerCase();
 
     if (query !== '') {
       window.location = '/' + type + '/' + query;
