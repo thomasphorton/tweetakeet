@@ -94,7 +94,6 @@ exports.generate = function(seed, cb) {
   dictionary.findOne({ _id: seed}, function(e, node) {
 
     if (!node) {
-      console.error('Node not found, exiting.');
       return false;
     } else {
 
@@ -138,14 +137,16 @@ function get_next_node(node, cb) {
   var next_node = node.next[Math.floor(Math.random() * node.next.length)];
 
   if (next_node === "{{end}}") {
+
     if (typeof(cb) === 'function') {
       cb();
     }
+
   } else {
 
     dictionary.findOne({ _id: next_node}, function(e, new_node) {
-
       chain.push(new_node);
+
       if (typeof(cb) === 'function') {
         cb(new_node);
       }
@@ -157,21 +158,11 @@ function get_next_node(node, cb) {
 }
 
 function generate_chain(cb) {
-
-    get_next_node(chain[chain.length-1], function(result) {
-
-      if (result !== null && !result._id !== "{{end}}") {
-
-        generate_chain(cb);
-
-      } else {
-
-        if (typeof(cb) === 'function') {
-          cb(chain);
-        }
-
-      }
-
-    });
-
+  get_next_node(chain[chain.length-1], function(result) {
+    if (result === undefined) {
+      cb(chain);
+    } else {
+      generate_chain(cb);
+    }
+  });
 }
