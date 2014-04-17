@@ -57,7 +57,9 @@ app.get('/', pages.index);
 // app.get('/clear', markov.clear);
 app.get('/dictionary', pages.dictionary);
 app.get('/dictionary/:query', markov.dictionary);
+app.post('/dictionary', markov.dictionary);
 app.get('/generate', pages.generate);
+app.post('/generate', markov.generate_page);
 app.get('/generate/:query', markov.generate_page);
 
 http.createServer(app).listen(app.get('port'), function() {

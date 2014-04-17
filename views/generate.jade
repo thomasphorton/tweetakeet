@@ -8,8 +8,8 @@ block content
 
         p #{content}
 
-        form.markov-form.form-inline(data-type="generate")
+        form.markov-form.form-inline(data-type="generate" action="/generate" method="POST")
           div.input-group
-            input.markov-input.form-control(placeholder="First Word of Chain")
+            input.markov-input.form-control(placeholder="First Word of Chain" name="q")
             span.input-group-btn
               button.btn.btn-default Begin Chain

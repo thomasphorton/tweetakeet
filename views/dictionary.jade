@@ -8,8 +8,8 @@ block content
 
         p #{content}
 
-        form.markov-form.form-inline(data-type="dictionary")
+        form.markov-form.form-inline(data-type="dictionary" action="/dictionary" method="POST")
           div.input-group
-            input.markov-input.form-control(placeholder="Word To Look Up")
+            input.markov-input.form-control(placeholder="Word To Look Up" name="q")
             span.input-group-btn
               button.btn.btn-default Search

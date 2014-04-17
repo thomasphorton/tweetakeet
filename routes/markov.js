@@ -82,7 +82,13 @@ exports.clear = function(req, res) {
 
 exports.dictionary = function(req, res) {
 
-  var seed = req.params.query;
+  var seed;
+
+  if (req.params.query) {
+    seed = req.params.query;
+  } else {
+    seed = req.body.q;
+  }
 
   dictionary.findOne({ _id: seed}, function(e, node) {
 
@@ -170,7 +176,13 @@ exports.generate = function(seed, cb) {
 
 exports.generate_page = function(req, res) {
 
-  var seed = req.params.query;
+  var seed;
+
+  if (req.params.query) {
+    seed = req.params.query;
+  } else {
+    seed = req.body.q;
+  }
 
   dictionary.findOne({ _id: seed}, function(e, node) {
 
